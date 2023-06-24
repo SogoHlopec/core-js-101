@@ -268,11 +268,7 @@ function propagateItemsByPositionIndex(arr) {
   if (arr.length === 0 || arr.length === 1) {
     return arr;
   }
-  const result = arr.reduce(
-    (acc, curr, index) => acc.concat(Array(index + 1).fill(curr)),
-    // eslint-disable-next-line comma-dangle
-    []
-  );
+  const result = arr.reduce((acc, curr, index) => acc.concat(Array(index + 1).fill(curr)), []);
   return result;
 }
 
@@ -526,8 +522,17 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const result = new Map();
+  array.map((item) => {
+    if (result.has(keySelector(item))) {
+      result.get(keySelector(item)).push(valueSelector(item));
+    } else {
+      result.set(keySelector(item), [valueSelector(item)]);
+    }
+    return result;
+  });
+  return result;
 }
 
 /**
